@@ -1,0 +1,55 @@
+# Cloud Build configuration
+# Substitutions expected:
+# _REGION: e.g. asia-south1
+# _REPO: Artifact Registry repo, e.g. my-repo
+# _SERVICE: Cloud Run service name, e.g. registration
+# _PROJECT_ID: GCP project ID
+# Example trigger substitutions recommended
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO}/${_SERVICE}:$SHORT_SHA'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO}/${_SERVICE}:$SHORT_SHA'
+  # Optional: Deploy to Cloud Run (comment out to skip)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE}'
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO}/${_SERVICE}:$SHORT_SHA'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'NODE_ENV=production'
+      - '--set-env-vars'
+      - 'SESSION_SECRET=$$(SESSION_SECRET)'
+      - '--set-env-vars'
+      - 'BASE_URL=$$(BASE_URL)'
+      - '--port'
+      - '8080'
+substitutions:
+  _REGION: asia-south1
+  _REPO: registry
+  _SERVICE: registration
+  _PROJECT_ID: my-project
+images:
+  - '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO}/${_SERVICE}:$SHORT_SHA'
+# Declare env vars used at deploy time
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/SESSION_SECRET/versions/latest
+      env: SESSION_SECRET
+    - versionName: projects/$PROJECT_ID/secrets/BASE_URL/versions/latest
+      env: BASE_URL'
