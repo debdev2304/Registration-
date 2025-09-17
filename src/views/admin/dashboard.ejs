@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Admin Dashboard</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="brand">Admin Dashboard</div>
+				<a href="/admin/audit" class="badge">Audit Logs</a>
+			</div>
+			<div class="main">
+				<div class="card">
+					<h2>Create Team</h2>
+					<form method="post" action="/admin/teams">
+						<label>Team Name</label>
+						<input type="text" name="name" placeholder="Team name" required />
+						<button type="submit">Create</button>
+					</form>
+				</div>
+
+				<div class="card">
+					<h2>Pending Requests</h2>
+					<% if (!pending.length) { %>
+						<p class="badge">No pending requests.</p>
+					<% } else { %>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Team</th>
+									<th>Phone</th>
+									<th>Aadhar</th>
+									<th>Institute</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<% pending.forEach(r => { %>
+									<tr>
+										<td><%= r.participant_name %></td>
+										<td><%= r.team_name %></td>
+										<td><%= r.phone %></td>
+										<td><%= r.aadhar %></td>
+										<td><%= r.institute %></td>
+										<td>
+											<form method="post" action="/admin/requests/<%= r.id %>/approve" style="display:inline">
+												<button type="submit">Approve</button>
+											</form>
+											<form method="post" action="/admin/requests/<%= r.id %>/reject" style="display:inline">
+												<button type="submit" class="danger">Reject</button>
+											</form>
+										</td>
+									</tr>
+								<% }) %>
+							</tbody>
+						</table>
+					<% } %>
+				</div>
+
+				<div class="card">
+					<h2>Teams</h2>
+					<ul>
+						<% teams.forEach(t => { %>
+							<li style="margin:6px 0">
+								<span class="badge"><%= t.name %></span>
+								<a style="margin-left:8px" href="/admin/teams/<%= t.id %>/pdf" target="_blank">View PDF</a>
+							</li>
+						<% }) %>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

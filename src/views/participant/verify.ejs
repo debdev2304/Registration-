@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Verify OTP</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="brand">Registration Portal</div>
+			</div>
+			<div class="main">
+				<div class="card">
+					<h1>Verify OTP</h1>
+					<p class="badge">Phone: <%= phone %></p>
+					<% if (typeof error !== 'undefined') { %>
+						<div class="error"><%= error %></div>
+					<% } %>
+					<form method="post" action="/participant/otp/verify">
+						<input type="hidden" name="phone" value="<%= phone %>" />
+						<label>OTP</label>
+						<input type="text" name="code" placeholder="6-digit code" required />
+						<button type="submit">Verify</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

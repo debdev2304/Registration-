@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Login</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="brand">Registration Portal</div>
+			</div>
+			<div class="main">
+				<div class="card">
+					<h1>Participant Login</h1>
+					<% if (typeof error !== 'undefined') { %>
+						<div class="error"><%= error %></div>
+					<% } %>
+					<form method="post" action="/participant/otp/request">
+						<label>Phone (10 digits)</label>
+						<input type="text" name="phone" placeholder="e.g. 9876543210" required />
+						<button type="submit">Request OTP</button>
+					</form>
+				</div>
+
+				<div class="card">
+					<h1>Admin Login</h1>
+					<p class="badge">Fixed admin phone: 9641072337</p>
+					<form method="post" action="/admin/login">
+						<label>Access Code</label>
+						<input type="text" name="code" placeholder="Enter access code" required />
+						<button type="submit" class="secondary">Login as Admin</button>
+					</form>
+					<div class="section">
+						<span class="badge">Tip</span>
+						<span style="margin-left:8px;color:var(--muted)">Use the admin access code to manage teams and approvals.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

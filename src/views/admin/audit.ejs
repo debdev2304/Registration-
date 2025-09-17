@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Audit Logs</title>
+	</head>
+	<body>
+		<h1>Audit Logs</h1>
+		<p><a href="/admin">Back</a></p>
+		<table border="1" cellpadding="6" cellspacing="0">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Actor</th>
+					<th>Action</th>
+					<th>Details</th>
+					<th>At</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% logs.forEach(l => { %>
+					<tr>
+						<td><%= l.id %></td>
+						<td><%= l.actor_user_id || '-' %></td>
+						<td><%= l.action %></td>
+						<td><%= l.details %></td>
+						<td><%= l.created_at %></td>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+	</body>
+</html>

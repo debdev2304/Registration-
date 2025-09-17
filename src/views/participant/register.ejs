@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Registration</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="brand">Registration Portal</div>
+				<a href="/participant/logout" class="badge">Logout</a>
+			</div>
+			<div class="main">
+				<div class="card">
+					<h1>Participant Registration</h1>
+					<% if (typeof error !== 'undefined') { %>
+						<div class="error"><%= error %></div>
+					<% } %>
+					<form method="post" action="/participant/register">
+						<label>Team</label>
+						<select name="team_id" required>
+							<option value="">-- Select Team --</option>
+							<% teams.forEach(t => { %>
+								<option value="<%= t.id %>"><%= t.name %></option>
+							<% }) %>
+						</select>
+						<label>Name</label>
+						<input type="text" name="name" required />
+						<label>Aadhar (12 digits)</label>
+						<input type="text" name="aadhar" required />
+						<label>Institute</label>
+						<input type="text" name="institute" required />
+						<button type="submit">Submit Registration</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
